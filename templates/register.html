@@ -1,0 +1,51 @@
+{% extends "base.html" %} {% block title %}註冊{% endblock %} {% block content
+%}
+<div class="register-container">
+  <h1>用戶註冊</h1>
+
+  {% with messages = get_flashed_messages(with_categories=true) %} {% if
+  messages %} {% for category, message in messages %}
+  <div class="alert alert-{{ category }}">{{ message }}</div>
+  {% endfor %} {% endif %} {% endwith %}
+
+  <form method="POST" action="{{ url_for('auth.register') }}">
+    {{ form.hidden_tag() }}
+
+    <div class="form-group">
+      {{ form.username.label }} {{ form.username(class="form-control") }} {% if
+      form.username.errors %} {% for error in form.username.errors %}
+      <span class="error">{{ error }}</span>
+      {% endfor %} {% endif %}
+    </div>
+
+    <div class="form-group">
+      {{ form.email.label }} {{ form.email(class="form-control") }} {% if
+      form.email.errors %} {% for error in form.email.errors %}
+      <span class="error">{{ error }}</span>
+      {% endfor %} {% endif %}
+    </div>
+
+    <div class="form-group">
+      {{ form.password.label }} {{ form.password(class="form-control") }} {% if
+      form.password.errors %} {% for error in form.password.errors %}
+      <span class="error">{{ error }}</span>
+      {% endfor %} {% endif %}
+    </div>
+
+    <div class="form-group">
+      {{ form.confirm_password.label }} {{
+      form.confirm_password(class="form-control") }} {% if
+      form.confirm_password.errors %} {% for error in
+      form.confirm_password.errors %}
+      <span class="error">{{ error }}</span>
+      {% endfor %} {% endif %}
+    </div>
+
+    <div class="form-group">{{ form.submit(class="btn btn-primary") }}</div>
+  </form>
+
+  <div class="login-link">
+    已經有帳號了？ <a href="{{ url_for('auth.login') }}">立即登錄</a>
+  </div>
+</div>
+{% endblock %}

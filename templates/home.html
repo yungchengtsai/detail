@@ -1,0 +1,17 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
+%}
+<h1>Welcome to Movie Booking</h1>
+<div class="movies">
+  {% if movies %} {% for movie in movies %}
+  <div class="movie">
+    <h2>{{ movie.title }}</h2>
+    <p>{{ movie.description }}</p>
+    <a href="{{ url_for('main.movie_detail', movie_id=movie.id) }}"
+      >View Details</a
+    >
+  </div>
+  {% endfor %} {% else %}
+  <p>No movies available at the moment. Please check back later!</p>
+  {% endif %}
+</div>
+{% endblock %}

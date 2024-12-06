@@ -1,0 +1,9 @@
+{% extends "base.html" %} {% block title %}Book Seat{% endblock %} {% block
+content %}
+<h1>Book Seat for {{ screening.movie.title }}</h1>
+<form method="post">
+  {{ form.hidden_tag() }}
+  <div>{{ form.seat_number.label }}: {{ form.seat_number }}</div>
+  <button type="submit">Book</button>
+</form>
+{% endblock %}

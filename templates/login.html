@@ -1,0 +1,35 @@
+{% extends "base.html" %} {% block title %}登錄{% endblock %} {% block content
+%}
+<div class="login-container">
+  <h1>用戶登錄</h1>
+
+  {% with messages = get_flashed_messages(with_categories=true) %} {% if
+  messages %} {% for category, message in messages %}
+  <div class="alert alert-{{ category }}">{{ message }}</div>
+  {% endfor %} {% endif %} {% endwith %}
+
+  <form method="POST" action="{{ url_for('auth.login') }}">
+    {{ form.hidden_tag() }}
+
+    <div class="form-group">
+      {{ form.email.label }} {{ form.email(class="form-control") }} {% if
+      form.email.errors %} {% for error in form.email.errors %}
+      <span class="error">{{ error }}</span>
+      {% endfor %} {% endif %}
+    </div>
+
+    <div class="form-group">
+      {{ form.password.label }} {{ form.password(class="form-control") }} {% if
+      form.password.errors %} {% for error in form.password.errors %}
+      <span class="error">{{ error }}</span>
+      {% endfor %} {% endif %}
+    </div>
+
+    <div class="form-group">{{ form.submit(class="btn btn-primary") }}</div>
+  </form>
+
+  <div class="register-link">
+    還沒有帳號？ <a href="{{ url_for('auth.register') }}">立即註冊</a>
+  </div>
+</div>
+{% endblock %}
