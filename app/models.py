@@ -27,6 +27,7 @@ class Movie(db.Model):
     description = db.Column(db.Text)
     genre = db.Column(db.String(100))
     screening_times = db.relationship("ScreeningTime", backref="movie", lazy=True)
+    release_date = db.Column(db.String(50),nullable=False)
 
 
 class Cinema(db.Model):
