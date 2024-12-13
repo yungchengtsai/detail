@@ -22,3 +22,6 @@ instance/
 
 # Logs
 *.log
+
+# Fucking OS X
+.DS_Store
