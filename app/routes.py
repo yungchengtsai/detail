@@ -11,8 +11,18 @@ auth = Blueprint("auth", __name__)
 
 @main.route("/")
 def home():
-    movies = Movie.query.all()
-    return render_template("home.html", movies=movies)
+    movies = Movie.query.filter_by(is_current=True).limit(6).all()
+    # top_rated_movies = Movie.query.order_by(Movie.rating.desc()).limit(6).all()
+    # most_commented_movies = (
+    #     Movie.query.order_by(Movie.comments_count.desc()).limit(6).all()
+    # )
+
+    return render_template(
+        "home.html",
+        movies=movies,
+        top_rated_movies=[],
+        most_commented_movies=[],
+    )
 
 
 @main.route("/movie/<int:movie_id>")
@@ -96,3 +106,13 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for("main.home"))
+
+
+@main.route("/search")
+def search():
+    query = request.args.get("query", "")
+    if query:
+        movies = Movie.query.filter(Movie.title.ilike(f"%{query}%")).all()
+    else:
+        movies = []
+    return render_template("search_results.html", movies=movies, query=query)

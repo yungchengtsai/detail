@@ -1,29 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <title>{% block title %}MovieBooker{% endblock %}</title>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link
       rel="stylesheet"
-      href="{{ url_for('static', filename='css/main.css') }}"
+      href="{{ url_for('static', filename='css/style.css') }}"
+      type="text/css"
+      media="all"
     />
-    <title>{% block title %}Movie Booking{% endblock %}</title>
+    <script
+      type="text/javascript"
+      src="{{ url_for('static', filename='js/jquery-3.7.1.min.js') }}"
+    ></script>
+    <script
+      type="text/javascript"
+      src="{{ url_for('static', filename='js/jquery-func.js') }}"
+    ></script>
+    {% block extra_head %}{% endblock %}
   </head>
   <body>
-    <header>
-      <nav>
-        <ul>
-          <li><a href="{{ url_for('main.home') }}">Home</a></li>
-          {% if current_user.is_authenticated %}
-          <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
-          {% else %}
-          <li><a href="{{ url_for('auth.login') }}">Login</a></li>
-          <li><a href="{{ url_for('auth.register') }}">Register</a></li>
-          {% endif %}
-        </ul>
-      </nav>
-    </header>
-    <main>{% block content %}{% endblock %}</main>
+    <div id="shell">
+      <!-- Header -->
+      <div id="header">
+        <h1 id="logo"><a href="{{ url_for('main.home') }}">MovieBooker</a></h1>
+        <div id="navigation">
+          <ul>
+            <li>
+              <a class="active" href="{{ url_for('main.home') }}">HOME</a>
+            </li>
+            <li><a href="#">Booking</a></li>
+            <li><a href="#">Your List</a></li>
+            {% if current_user.is_authenticated %}
+            <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+            {% else %}
+            <li><a href="{{ url_for('auth.login') }}">SignIn</a></li>
+            {% endif %}
+          </ul>
+        </div>
+        <div id="sub-navigation">
+          <div id="search">
+            <form
+              action="{{ url_for('main.search') }}"
+              method="get"
+              accept-charset="utf-8"
+            >
+              <label for="search-field">SEARCH</label>
+              <input
+                type="text"
+                name="query"
+                value="Enter search here"
+                id="search-field"
+                class="blink search-field"
+              />
+              <input type="submit" value="GO!" class="search-button" />
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div id="main">
+        <div id="content">{% block content %}{% endblock %}</div>
+      </div>
+    </div>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
   </body>
 </html>
