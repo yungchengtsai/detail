@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 from app import db
 from app.models import User, Movie, Cinema, ScreeningTime
 
+
 def seed_movies():
     """創建電影數據"""
     return [
@@ -27,6 +28,7 @@ def seed_movies():
         ),
     ]
 
+
 def seed_cinemas():
     """創建影院數據"""
     return [
@@ -34,6 +36,7 @@ def seed_cinemas():
         Cinema(name="新光影城", location="台北市西門町"),
         Cinema(name="威秀影城", location="台北市信義區"),
     ]
+
 
 def create_screening_times(movies, cinemas):
     """創建放映時間"""
@@ -50,13 +53,10 @@ def create_screening_times(movies, cinemas):
                 ]
                 for time in times:
                     screenings.append(
-                        ScreeningTime(
-                            movie_id=movie.id,
-                            cinema_id=cinema.id,
-                            date=time
-                        )
+                        ScreeningTime(movie_id=movie.id, cinema_id=cinema.id, date=time)
                     )
     return screenings
+
 
 def create_admin():
     """創建管理員帳號"""
@@ -64,26 +64,27 @@ def create_admin():
     admin.set_password("admin123")
     return admin
 
+
 def init_db():
     """初始化數據庫"""
     # 檢查是否已有數據
     if Movie.query.first() is not None:
         return
-    
+
     # 創建並添加數據
     movies = seed_movies()
     cinemas = seed_cinemas()
-    
+
     db.session.add_all(movies)
     db.session.add_all(cinemas)
     db.session.commit()
-    
+
     # 創建放映時間
     screenings = create_screening_times(movies, cinemas)
     db.session.add_all(screenings)
-    
+
     # 創建管理員
     admin = create_admin()
     db.session.add(admin)
-    
+
     db.session.commit()

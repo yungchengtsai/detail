@@ -29,7 +29,7 @@ class Movie(db.Model):
     screening_times = db.relationship("ScreeningTime", backref="movie", lazy=True)
     is_current = True
     rating = 5.0
-    release_date = db.Column(db.String(50), nullable=False)
+    release_date = db.Column(db.String(50), nullable=True)
 
 
 class Cinema(db.Model):
