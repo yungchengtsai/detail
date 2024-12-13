@@ -20,6 +20,11 @@ def seed_movies():
             description="胡迪和巴斯光年展開全新冒險，尋找新主人的玩具。",
             genre="動畫/冒險",
         ),
+        Movie(
+            title="獅子王 : 木法沙",
+            description="非洲草原上的小獅子辛巴在父親木法沙的教導和犧牲下，克服背叛與失落，最終成長為真正國王",
+            genre="動畫/冒險",
+        ),
     ]
 
 def seed_cinemas():
