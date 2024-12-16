@@ -116,3 +116,32 @@ def search():
     else:
         movies = []
     return render_template("search_results.html", movies=movies, query=query)
+
+
+@main.route("/movies/showing")
+def movies_showing():
+    page = request.args.get("page", 1, type=int)
+    per_page = 12  # 每頁顯示12部電影
+    movies_query = Movie.query.filter(Movie.is_current == True).order_by(
+        Movie.release_date.desc()
+    )
+    movies = movies_query.paginate(page=page, per_page=per_page, error_out=False)
+    return render_template("movies_showing.html", movies=movies)
+
+
+@main.route("/movies/top-rated")
+def top_rated_movies():
+    page = request.args.get("page", 1, type=int)
+    per_page = 12  # 每頁顯示12部電影
+    movies_query = Movie.query.order_by(Movie.average_rating.desc())
+    movies = movies_query.paginate(page=page, per_page=per_page, error_out=False)
+    return render_template("top_rated_movies.html", movies=movies)
+
+
+@main.route("/movies/most-commented")
+def most_commented_movies():
+    page = request.args.get("page", 1, type=int)
+    per_page = 12  # 每頁顯示12部電影
+    movies_query = Movie.query.order_by(Movie.comments_count.desc())
+    movies = movies_query.paginate(page=page, per_page=per_page, error_out=False)
+    return render_template("most_commented_movies.html", movies=movies)
