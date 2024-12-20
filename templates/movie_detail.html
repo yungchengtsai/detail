@@ -11,7 +11,18 @@ block content %}
 
   <div style="flex: 1;">
     <h1>{{ movie.title }}</h1>
-    <p>{{ movie.description }}</p>
+    <div class="rating">
+      <p>Rate:</p>
+      <div class="stars">
+        <div class="stars-in"></div>
+      </div>
+      <span class="comments">{{ movie.comments_count }}</span>
+    </div>
+    <br>
+    <br>
+    <p><strong>Release_date:</strong>{{ movie.release_date }}</p>
+    <p><strong>Duration:</strong></p>
+    <p><strong>Description:</strong>{{ movie.description }}</p>
     <p><strong>Genre:</strong> {{ movie.genre }}</p>
   </div>
 </div>
