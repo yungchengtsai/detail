@@ -48,4 +48,74 @@ block content %}
     %} Add to Favorites {% endif %}
   </button>
 </form>
+
+<div>
+  <h2>Leave a Review</h2>
+  <button 
+    id="toggle-review-form" 
+    style="margin-bottom: 10px;"
+  >
+    Write a Review
+  </button>
+
+  <!-- 隱藏評論表單 -->
+  <form 
+    id="review-form" 
+    method="post" 
+    action="{{ url_for('main.submit_review', movie_id=movie.id) }}" 
+    style="display: none; margin-top: 10px;"
+  >
+    <label for="rate">Rate this movie (e.g., 4.5):</label>
+    <input 
+      type="number" 
+      step="0.5" 
+      id="rate" 
+      name="rate" 
+      min="0.5" 
+      max="5.0" 
+      required 
+      style="margin-bottom: 10px;" 
+    />
+    <textarea 
+      name="review" 
+      placeholder="Write your review here..." 
+      style="width: 100%; height: 100px;" 
+      required>
+    </textarea>
+    <br />
+    <button type="submit" style="margin-top: 10px;">Submit Review</button>
+  </form>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const toggleButton = document.getElementById("toggle-review-form");
+    const reviewForm = document.getElementById("review-form");
+
+    toggleButton.addEventListener("click", function () {
+      // 切換表單的顯示狀態
+      if (reviewForm.style.display === "none" || reviewForm.style.display === "") {
+        reviewForm.style.display = "block";
+        toggleButton.textContent = "Cancel Review";
+      } else {
+        reviewForm.style.display = "none";
+        toggleButton.textContent = "Write a Review";
+      }
+    });
+  });
+</script>
+
+<h2>Reviews</h2>
+{% if reviews %}
+  <ul>
+    {% for review in reviews %}
+    <li>
+      <p><strong>{{ review[1] }}</strong> rated it / {{review.rate}}</p>
+      <p>{{ review[2] }}</p>
+    </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>No reviews yet. Be the first to leave a review!</p>
+{% endif %}
 {% endblock %}
