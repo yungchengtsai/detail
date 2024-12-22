@@ -4,6 +4,7 @@ from flask_login import login_user, logout_user, login_required, current_user
 from app import db
 from app.models import User, Movie, Cinema, ScreeningTime, Booking, Review
 from app.forms import RegistrationForm, LoginForm, BookingForm
+from datetime import datetime
 
 main = Blueprint("main", __name__)
 auth = Blueprint("auth", __name__)
@@ -28,6 +29,7 @@ def home():
 @main.route("/movie/<int:movie_id>")
 def movie_detail(movie_id):
     movie = Movie.query.get_or_404(movie_id)
+    current_time = datetime.now()
     reviews = (
         Review.query.filter_by(movie_id=movie_id)
         .join(User, Review.user_id == User.id)
@@ -40,7 +42,10 @@ def movie_detail(movie_id):
         .scalar()
     )
     average_rating = round(average_rating, 1) if average_rating else 0
-    screenings = ScreeningTime.query.filter_by(movie_id=movie_id).all()
+    screenings = ScreeningTime.query.filter(
+        ScreeningTime.movie_id == movie_id,
+        ScreeningTime.date >= current_time  
+    ).all()
     return render_template("movie_detail.html", movie=movie, reviews=reviews, screenings=screenings, average_rating=average_rating)
 
 
