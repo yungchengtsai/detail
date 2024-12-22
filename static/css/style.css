@@ -220,6 +220,7 @@ h1#logo a {
 }
 .box .head {
   width: 980px;
+  height: 15px;
   padding-top: 14px;
   padding-bottom: 30px;
 }

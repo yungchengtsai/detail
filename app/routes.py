@@ -153,3 +153,9 @@ def cinema_screenings(cinema_id):
     cinema = Cinema.query.get_or_404(cinema_id)
     screenings = ScreeningTime.query.filter_by(cinema_id=cinema_id).all()
     return render_template('cinema_screenings.html', cinema=cinema, screenings=screenings)
+
+@main.route("/my-list")
+@login_required
+def my_list():
+    favorite_movies = current_user.favorite_movies
+    return render_template("my_list.html", favorite_movies=favorite_movies)
