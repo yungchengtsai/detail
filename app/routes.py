@@ -1,4 +1,3 @@
-# app/routes.py
 from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_login import login_user, logout_user, login_required, current_user
 from app import db
@@ -11,17 +10,17 @@ auth = Blueprint("auth", __name__)
 
 @main.route("/")
 def home():
-    movies = Movie.query.filter_by(is_current=True).limit(6).all()
-    # top_rated_movies = Movie.query.order_by(Movie.rating.desc()).limit(6).all()
-    # most_commented_movies = (
-    #     Movie.query.order_by(Movie.comments_count.desc()).limit(6).all()
-    # )
+    movies = Movie.query.filter_by(is_current=True).limit(10).all()
+    top_rated_movies = Movie.query.order_by(Movie.rating.desc()).limit(5).all()
+    most_commented_movies = (
+        Movie.query.order_by(Movie.comments_count.desc()).limit(5).all()
+    )
 
     return render_template(
         "home.html",
         movies=movies,
-        top_rated_movies=[],
-        most_commented_movies=[],
+        top_rated_movies=top_rated_movies,
+        most_commented_movies=most_commented_movies,
     )
 
 
@@ -51,7 +50,6 @@ def book_seat(screening_id):
     form = BookingForm()
 
     if form.validate_on_submit():
-        # Check if seat is already booked
         existing_booking = Booking.query.filter_by(
             screening_id=screening_id, seat_number=form.seat_number.data
         ).first()
@@ -60,7 +58,6 @@ def book_seat(screening_id):
             flash("This seat is already booked", "danger")
             return render_template("booking.html", form=form, screening=screening)
 
-        # Create new booking
         booking = Booking(
             user_id=current_user.id,
             screening_id=screening_id,
@@ -121,7 +118,7 @@ def search():
 @main.route("/movies/showing")
 def movies_showing():
     page = request.args.get("page", 1, type=int)
-    per_page = 12  # 每頁顯示12部電影
+    per_page = 12
     movies_query = Movie.query.filter(Movie.is_current == True).order_by(
         Movie.release_date.desc()
     )
@@ -132,8 +129,8 @@ def movies_showing():
 @main.route("/movies/top-rated")
 def top_rated_movies():
     page = request.args.get("page", 1, type=int)
-    per_page = 12  # 每頁顯示12部電影
-    movies_query = Movie.query.order_by(Movie.average_rating.desc())
+    per_page = 12
+    movies_query = Movie.query.order_by(Movie.rating.desc())
     movies = movies_query.paginate(page=page, per_page=per_page, error_out=False)
     return render_template("top_rated_movies.html", movies=movies)
 
@@ -141,7 +138,7 @@ def top_rated_movies():
 @main.route("/movies/most-commented")
 def most_commented_movies():
     page = request.args.get("page", 1, type=int)
-    per_page = 12  # 每頁顯示12部電影
+    per_page = 12
     movies_query = Movie.query.order_by(Movie.comments_count.desc())
     movies = movies_query.paginate(page=page, per_page=per_page, error_out=False)
     return render_template("most_commented_movies.html", movies=movies)
