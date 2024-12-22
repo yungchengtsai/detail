@@ -34,8 +34,14 @@ def movie_detail(movie_id):
         .add_columns(User.username, Review.content, Review.rate)
         .all()
     )
+    average_rating = (
+        db.session.query(db.func.avg(Review.rate))
+        .filter(Review.movie_id == movie_id)
+        .scalar()
+    )
+    average_rating = round(average_rating, 1) if average_rating else 0
     screenings = ScreeningTime.query.filter_by(movie_id=movie_id).all()
-    return render_template("movie_detail.html", movie=movie, reviews=reviews, screenings=screenings)
+    return render_template("movie_detail.html", movie=movie, reviews=reviews, screenings=screenings, average_rating=average_rating)
 
 
 @main.route("/favorite/<int:movie_id>", methods=["POST"])

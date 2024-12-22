@@ -16,6 +16,9 @@ block content %}
       <div class="stars">
         <div class="stars-in"></div>
       </div>
+      <span style="margin-left: 10px; font-size: 14px;">
+        {{ average_rating if average_rating else 'No Rating Yet' }}/5.0
+      </span>
       <span class="comments">{{ movie.comments_count }}</span>
     </div>
     <br>
@@ -50,7 +53,7 @@ block content %}
 </form>
 
 <div>
-  <h2>Leave a Review</h2>
+  <h2>Give it a Review</h2>
   <button 
     id="toggle-review-form" 
     style="margin-bottom: 10px;"
@@ -58,7 +61,6 @@ block content %}
     Write a Review
   </button>
 
-  <!-- 隱藏評論表單 -->
   <form 
     id="review-form" 
     method="post" 
@@ -93,7 +95,6 @@ block content %}
     const reviewForm = document.getElementById("review-form");
 
     toggleButton.addEventListener("click", function () {
-      // 切換表單的顯示狀態
       if (reviewForm.style.display === "none" || reviewForm.style.display === "") {
         reviewForm.style.display = "block";
         toggleButton.textContent = "Cancel Review";
