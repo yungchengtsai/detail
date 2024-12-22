@@ -142,3 +142,14 @@ def most_commented_movies():
     movies_query = Movie.query.order_by(Movie.comments_count.desc())
     movies = movies_query.paginate(page=page, per_page=per_page, error_out=False)
     return render_template("most_commented_movies.html", movies=movies)
+
+@main.route('/cinemas')
+def cinemas():
+    cinemas = Cinema.query.all()
+    return render_template('cinemas.html', cinemas=cinemas)
+
+@main.route('/cinema/<int:cinema_id>/screenings')
+def cinema_screenings(cinema_id):
+    cinema = Cinema.query.get_or_404(cinema_id)
+    screenings = ScreeningTime.query.filter_by(cinema_id=cinema_id).all()
+    return render_template('cinema_screenings.html', cinema=cinema, screenings=screenings)
